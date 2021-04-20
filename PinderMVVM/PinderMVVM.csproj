@@ -6,4 +6,15 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CommandHelper">
+      <HintPath>D:\Zubehoer\CommandHelper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
