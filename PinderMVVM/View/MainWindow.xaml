@@ -14,7 +14,7 @@
         <ListBox HorizontalAlignment="Left" Height="181" Margin="10,222,0,0" VerticalAlignment="Top" Width="119"/>
         <ListBox HorizontalAlignment="Left" Height="348" Margin="134,55,0,0" VerticalAlignment="Top" Width="322"/>
         <ListBox HorizontalAlignment="Left" Height="348" Margin="461,55,0,0" VerticalAlignment="Top" Width="322"/>
-        <Button Content="Scan" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="96"/>
+        <Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="96"/>
         <Button Content="Button" HorizontalAlignment="Left" Height="29" Margin="313,10,0,0" VerticalAlignment="Top" Width="96"/>
         <Button Content="Button" HorizontalAlignment="Left" Height="29" Margin="212,10,0,0" VerticalAlignment="Top" Width="96"/>
         <Button Content="Button" HorizontalAlignment="Left" Height="29" Margin="111,10,0,0" VerticalAlignment="Top" Width="96"/>

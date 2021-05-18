@@ -13,6 +13,7 @@ namespace PinderMVVM.ViewModel
 
         private void notifyPropertyChanged(string propname)
         {
+            //Test
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propname));
         }
 
