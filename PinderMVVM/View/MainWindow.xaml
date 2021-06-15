@@ -11,7 +11,9 @@
     </Window.DataContext>
     <Grid>
         <ListBox HorizontalAlignment="Left" Height="162" Margin="10,55,0,0" VerticalAlignment="Top" Width="119"/>
-        <ListBox HorizontalAlignment="Left" Height="181" Margin="10,222,0,0" VerticalAlignment="Top" Width="119"/>
+        <ListView HorizontalAlignment="Left" Height="181" Margin="10,222,0,0" VerticalAlignment="Top" Width="119">
+            <ListBox x:Name="listDrivesBox" ItemsSource="{Binding Laufwerke}" Height="173" Width="112" RenderTransformOrigin="0.399,0.493"></ListBox>
+        </ListView>
         <ListBox HorizontalAlignment="Left" Height="348" Margin="134,55,0,0" VerticalAlignment="Top" Width="322"/>
         <ListBox HorizontalAlignment="Left" Height="348" Margin="461,55,0,0" VerticalAlignment="Top" Width="322"/>
         <Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="96"/>
