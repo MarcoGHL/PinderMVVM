@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CommandHelper;
+﻿using CommandHelper;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
-using System.Windows;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System;
 
 namespace PinderMVVM.ViewModel
 {
@@ -14,9 +12,26 @@ namespace PinderMVVM.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private ICommand _scanCommand;
+        private ICommand _getFilesCommand;
+        private ICommand _getFolderCommand;
+        private string _selected;
+        public string IsSelected
+        {
+            get { return _selected; }
+            set { _selected = value; notifyPropertyChanged("IsSelected");}
+        }
 
+        private string _selectedFolder;
+        public string selectedFolder
+        {
+            get { return _selectedFolder; }
+            set { _selectedFolder = value; notifyPropertyChanged("selectedFolder"); }
+        }
 
         public ObservableCollection<string> DirectoryCollection { get; set; }
+        public ObservableCollection<string> FolderCollection { get; set; }
+        public ObservableCollection<string> FileCollection { get; set; }
+
 
         private void notifyPropertyChanged(string propname)
         {
@@ -26,6 +41,8 @@ namespace PinderMVVM.ViewModel
         public MainViewModel()
         {
             this.DirectoryCollection = new ObservableCollection<string>();
+            this.FolderCollection = new ObservableCollection<string>();
+            this.FileCollection = new ObservableCollection<string>();
             ScanDirectory();
         }
       
@@ -34,6 +51,22 @@ namespace PinderMVVM.ViewModel
             get
             {
                 return _scanCommand = new RelayCommand(c => ScanDirectory());
+            }
+        }
+
+        public ICommand getFilesCommand
+        {
+            get
+            {
+                return _getFilesCommand = new RelayCommand(c => GetFiles());
+            }
+        }
+
+        public ICommand getFolderCommand
+        {
+            get
+            {
+                return _getFolderCommand = new RelayCommand(c => GetFolders());
             }
         }
 
@@ -50,6 +83,49 @@ namespace PinderMVVM.ViewModel
                 {
                     this.DirectoryCollection.Add(directory);
                 }
+            }
+        }
+
+        private void GetFolders()
+        {
+            // get files of the selected directory
+            FileCollection.Clear();
+            FolderCollection.Clear();
+            if(IsSelected != null)
+            {
+                string[] filePaths = Directory.GetDirectories(Convert.ToString(IsSelected));
+                foreach (string files in filePaths)
+                {
+                    if (!FolderCollection.Contains(files))
+                    {
+                        this.FolderCollection.Add(files);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No directory selected, please try again!");
+            }
+        }
+
+        private void GetFiles()
+        {
+            // get files of the selected directory
+            FileCollection.Clear();
+            if (selectedFolder != null)
+            {
+                string[] filePaths = Directory.GetFiles(Convert.ToString(selectedFolder));
+                foreach (string files in filePaths)
+                {
+                    if (!FileCollection.Contains(files))
+                    {
+                        this.FileCollection.Add(files);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No folder selected, please try again!");
             }
         }
 
