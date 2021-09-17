@@ -23,7 +23,6 @@
         <ListBox  SelectedItem="{Binding Path=selectedFolder, Mode=TwoWay}" ItemsSource="{Binding FolderCollection}" HorizontalAlignment="Left" Height="347" Margin="138,55,0,0" VerticalAlignment="Top" Width="244" Grid.RowSpan="2"></ListBox>
         <ListBox ItemsSource="{Binding FileCollection}" HorizontalAlignment="Left" Height="348" Margin="387,55,0,0" VerticalAlignment="Top" Width="322" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
         <Button x:Name="btnScan" Content="Scan" Command="{Binding ScanCommand}" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="96"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="29" Margin="313,10,0,0" VerticalAlignment="Top" Width="96"/>
         <Button Content="Get Files" HorizontalAlignment="Left" Command="{Binding getFilesCommand}" Height="29" Margin="212,10,0,0" VerticalAlignment="Top" Width="96"/>
         <Button Content="Get Folders" Command="{Binding getFolderCommand}" HorizontalAlignment="Left" Height="29" Margin="111,10,0,0" VerticalAlignment="Top" Width="96"/>
     </Grid>

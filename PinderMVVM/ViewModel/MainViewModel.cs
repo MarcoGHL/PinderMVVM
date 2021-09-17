@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
+using PinderMVVM.Model;
 
 namespace PinderMVVM.ViewModel
 {
@@ -28,10 +29,11 @@ namespace PinderMVVM.ViewModel
             set { _selectedFolder = value; notifyPropertyChanged("selectedFolder"); }
         }
 
+        //create observable collections to save the directory, folders and files
         public ObservableCollection<string> DirectoryCollection { get; set; }
         public ObservableCollection<string> FolderCollection { get; set; }
         public ObservableCollection<string> FileCollection { get; set; }
-
+        
 
         private void notifyPropertyChanged(string propname)
         {
@@ -91,6 +93,7 @@ namespace PinderMVVM.ViewModel
             // get files of the selected directory
             FileCollection.Clear();
             FolderCollection.Clear();
+
             if(IsSelected != null)
             {
                 string[] filePaths = Directory.GetDirectories(Convert.ToString(IsSelected));
@@ -112,20 +115,28 @@ namespace PinderMVVM.ViewModel
         {
             // get files of the selected directory
             FileCollection.Clear();
-            if (selectedFolder != null)
+
+            try
             {
-                string[] filePaths = Directory.GetFiles(Convert.ToString(selectedFolder));
-                foreach (string files in filePaths)
+                if (selectedFolder != null)
                 {
-                    if (!FileCollection.Contains(files))
+                    string[] filePaths = Directory.GetFiles(selectedFolder, "*", SearchOption.AllDirectories);
+                    foreach (string files in filePaths)
                     {
-                        this.FileCollection.Add(files);
+                        if (!FileCollection.Contains(files))
+                        {
+                            this.FileCollection.Add(files);
+                        }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("No folder selected, please try again!");
+                }
             }
-            else
+            catch
             {
-                MessageBox.Show("No folder selected, please try again!");
+                MessageBox.Show("Sie haben keine Berechtigung für diesen Ordner, bitte kontaktieren Sie den Besitzer!");
             }
         }
 
