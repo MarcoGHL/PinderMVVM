@@ -5,6 +5,9 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
+using PinderMVVM.Model;
+using Npgsql;
+using System.Threading;
 
 namespace PinderMVVM.ViewModel
 {
@@ -28,10 +31,11 @@ namespace PinderMVVM.ViewModel
             set { _selectedFolder = value; notifyPropertyChanged("selectedFolder"); }
         }
 
+        //create observable collections to save the directory, folders and files
         public ObservableCollection<string> DirectoryCollection { get; set; }
         public ObservableCollection<string> FolderCollection { get; set; }
         public ObservableCollection<string> FileCollection { get; set; }
-
+        
 
         private void notifyPropertyChanged(string propname)
         {
@@ -70,9 +74,9 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get logical drives 
         private void ScanDirectory()
         {
-            // get logical drives and clear the obCollection 
             string[] drives = Directory.GetLogicalDrives();
             DirectoryCollection.Clear();
 
@@ -86,11 +90,12 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get folders of selected directorys
         private void GetFolders()
         {
-            // get files of the selected directory
             FileCollection.Clear();
             FolderCollection.Clear();
+
             if(IsSelected != null)
             {
                 string[] filePaths = Directory.GetDirectories(Convert.ToString(IsSelected));
@@ -108,24 +113,54 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get files of the selected folder
         private void GetFiles()
         {
-            // get files of the selected directory
             FileCollection.Clear();
-            if (selectedFolder != null)
+
+            try
             {
-                string[] filePaths = Directory.GetFiles(Convert.ToString(selectedFolder));
-                foreach (string files in filePaths)
+                if (selectedFolder != null)
                 {
-                    if (!FileCollection.Contains(files))
+                    string[] filePaths = Directory.GetFiles(selectedFolder, "*", SearchOption.AllDirectories);
+                    foreach (string files in filePaths)
                     {
-                        this.FileCollection.Add(files);
+                        if (!FileCollection.Contains(files))
+                        {
+                            this.FileCollection.Add(files);
+                        }
                     }
+
+                    try
+                    {
+                        var cs = "Host=localhost;Pooling=False;Command Timeout=3;Username=postgres;Password=Password;Database=PinderMVVM";
+
+                        var conn = new NpgsqlConnection(cs);
+                        conn.Open();
+
+
+                            foreach (string files in FileCollection)
+                            {
+                                using var stmt = new NpgsqlCommand("INSERT INTO files(path) VALUES (@Value);", conn);
+
+                                stmt.Parameters.AddWithValue("@Value", files);
+                                var res = stmt.ExecuteReader();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(Convert.ToString(e));
+                    }
+                   
+                }
+                else
+                {
+                    MessageBox.Show("No folder selected, please try again!");
                 }
             }
-            else
+            catch (UnauthorizedAccessException e)
             {
-                MessageBox.Show("No folder selected, please try again!");
+                MessageBox.Show(Convert.ToString(e));
             }
         }
 

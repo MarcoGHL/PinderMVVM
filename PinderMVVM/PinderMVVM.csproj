@@ -7,8 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="CommandHelper">
       <HintPath>D:\Zubehoer\CommandHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\Downloads\DLL\DLL\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Visualis.Extractor">
+      <HintPath>..\..\..\..\Downloads\DLL\DLL\Visualis.Extractor.dll</HintPath>
     </Reference>
   </ItemGroup>
 
