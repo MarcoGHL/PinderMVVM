@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System;
 using PinderMVVM.Model;
+using Npgsql;
+using System.Threading;
 
 namespace PinderMVVM.ViewModel
 {
@@ -72,9 +74,9 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get logical drives 
         private void ScanDirectory()
         {
-            // get logical drives and clear the obCollection 
             string[] drives = Directory.GetLogicalDrives();
             DirectoryCollection.Clear();
 
@@ -88,9 +90,9 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get folders of selected directorys
         private void GetFolders()
         {
-            // get files of the selected directory
             FileCollection.Clear();
             FolderCollection.Clear();
 
@@ -111,9 +113,9 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        // get files of the selected folder
         private void GetFiles()
         {
-            // get files of the selected directory
             FileCollection.Clear();
 
             try
@@ -128,15 +130,37 @@ namespace PinderMVVM.ViewModel
                             this.FileCollection.Add(files);
                         }
                     }
+
+                    try
+                    {
+                        var cs = "Host=localhost;Pooling=False;Command Timeout=3;Username=postgres;Password=Password;Database=PinderMVVM";
+
+                        var conn = new NpgsqlConnection(cs);
+                        conn.Open();
+
+
+                            foreach (string files in FileCollection)
+                            {
+                                using var stmt = new NpgsqlCommand("INSERT INTO files(path) VALUES (@Value);", conn);
+
+                                stmt.Parameters.AddWithValue("@Value", files);
+                                var res = stmt.ExecuteReader();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(Convert.ToString(e));
+                    }
+                   
                 }
                 else
                 {
                     MessageBox.Show("No folder selected, please try again!");
                 }
             }
-            catch
+            catch (UnauthorizedAccessException e)
             {
-                MessageBox.Show("Sie haben keine Berechtigung für diesen Ordner, bitte kontaktieren Sie den Besitzer!");
+                MessageBox.Show(Convert.ToString(e));
             }
         }
 

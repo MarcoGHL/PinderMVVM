@@ -3,27 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PinderMVVM" xmlns:viewmodel="clr-namespace:PinderMVVM.ViewModel"
+        xmlns:local="clr-namespace:PinderMVVM" xmlns:viewmodel="clr-namespace:PinderMVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="785">
+        Title="MainWindow" Height="auto" Width="1325">
+    
     <Window.DataContext>
         <viewmodel:MainViewModel x:Name="mvm"></viewmodel:MainViewModel>
     </Window.DataContext>
-    <Grid Margin="0,0,71,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="21*"/>
-            <RowDefinition Height="8*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="651*"/>
-            <ColumnDefinition Width="149*"/>
-        </Grid.ColumnDefinitions>
-        <ListBox HorizontalAlignment="Left" Height="162" Margin="10,55,0,0" VerticalAlignment="Top" Width="119"/>
-        <ListView SelectedItem="{Binding Path=IsSelected, Mode=TwoWay}" x:Name="listDrivesBox" ItemsSource="{Binding DirectoryCollection}" RenderTransformOrigin="0.399,0.493" Margin="14,229,452,32" Grid.RowSpan="2"/>
-        <ListBox  SelectedItem="{Binding Path=selectedFolder, Mode=TwoWay}" ItemsSource="{Binding FolderCollection}" HorizontalAlignment="Left" Height="347" Margin="138,55,0,0" VerticalAlignment="Top" Width="244" Grid.RowSpan="2"></ListBox>
-        <ListBox ItemsSource="{Binding FileCollection}" HorizontalAlignment="Left" Height="348" Margin="387,55,0,0" VerticalAlignment="Top" Width="322" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-        <Button x:Name="btnScan" Content="Scan" Command="{Binding ScanCommand}" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="96"/>
-        <Button Content="Get Files" HorizontalAlignment="Left" Command="{Binding getFilesCommand}" Height="29" Margin="212,10,0,0" VerticalAlignment="Top" Width="96"/>
-        <Button Content="Get Folders" Command="{Binding getFolderCommand}" HorizontalAlignment="Left" Height="29" Margin="111,10,0,0" VerticalAlignment="Top" Width="96"/>
+
+    <Grid>
+        <StackPanel Background="gray" Margin="0" Width="auto">
+            <Grid>
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="400"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!-- Top Row -->
+                <Button  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,20"       Height="40"             Content="Scan" x:Name="btnScan" Command="{Binding ScanCommand}" />
+                <Button   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left"    Margin="150,20,0,20" Height="40" Width="130" Content="Get Files" Command="{Binding getFilesCommand}" />
+                <Button  Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left"    Margin="10,20"       Height="40" Width="130"  Content="Get Folders" Command="{Binding getFolderCommand}" />
+                <Image   Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right"   Margin="10,20,10,0"          Height="80" Source="C:\Users\marco\source\repos\PinderMVVM\PinderMVVM\View\Pinder_Logo.PNG"           />
+
+                <!-- Bottom Row - Left Col -->
+                <Button  Grid.Column="0" Grid.Row="1" Height="30"  x:Name="btn_search" VerticalAlignment="Top"    Margin="10,10"  Content="Search"/>
+                <TextBox Grid.Column="0" Grid.Row="1" Height="30"  x:Name="txt_search" VerticalAlignment="Top"    Margin="10,50"/>
+                <ListView Grid.Column="0" Grid.Row="1" Height="300" SelectedItem="{Binding Path=IsSelected, Mode=TwoWay}" x:Name="listDrivesBox" ItemsSource="{Binding DirectoryCollection}"                     VerticalAlignment="Bottom" Margin="10"    HorizontalAlignment="Stretch"/>
+
+                <!-- Bottom Row - Center Col -->
+                <ListBox  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Height="400" Margin="10" VerticalAlignment="Top" SelectedItem="{Binding Path=selectedFolder, Mode=TwoWay}" ItemsSource="{Binding FolderCollection}" />
+
+                <!-- Bottom Row - Right Col -->
+                <ListBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Height="400" Margin="10" VerticalAlignment="Top" ItemsSource="{Binding FileCollection}"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>
+
+
+
+
+
