@@ -5,9 +5,11 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
-using PinderMVVM.Model;
 using Npgsql;
 using System.Threading;
+using Models;
+using Dataservice;
+using System.Collections.Generic;
 
 namespace PinderMVVM.ViewModel
 {
@@ -48,6 +50,7 @@ namespace PinderMVVM.ViewModel
             this.FolderCollection = new ObservableCollection<string>();
             this.FileCollection = new ObservableCollection<string>();
             ScanDirectory();
+            StartScanning();
         }
       
         public ICommand ScanCommand
@@ -143,5 +146,21 @@ namespace PinderMVVM.ViewModel
             }
         }
 
+        public static void StartScanning()
+        {
+            Readerservice Reader = new Readerservice();
+            ConnectionDB ConnectionDb = new ConnectionDB();
+
+            //Scann the Data from this path
+            List<string> Combineditem = Reader.GetData("C:\\Users\\Manu\\Desktop\\Daten");
+            ConnectionDb.ClearDatabase();
+
+            //validation to send the item into the right collum
+            foreach (var item in Combineditem)
+            {
+                var itemSplitted = item.Split(';');
+                ConnectionDb.CreateIntoDatabase(itemSplitted[1], itemSplitted[0]);
+            }
+        }
     }
 }
