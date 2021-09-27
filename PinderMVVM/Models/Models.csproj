@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Visualis.Extractor">
+      <HintPath>..\..\..\Pinderprojekt\Auslesen\DLL\Visualis.Extractor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
