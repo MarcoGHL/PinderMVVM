@@ -130,27 +130,6 @@ namespace PinderMVVM.ViewModel
                             this.FileCollection.Add(files);
                         }
                     }
-
-                    try
-                    {
-                        var cs = "Host=localhost;Pooling=False;Command Timeout=3;Username=postgres;Password=Password;Database=PinderMVVM";
-
-                        var conn = new NpgsqlConnection(cs);
-                        conn.Open();
-
-
-                            foreach (string files in FileCollection)
-                            {
-                                using var stmt = new NpgsqlCommand("INSERT INTO files(path) VALUES (@Value);", conn);
-
-                                stmt.Parameters.AddWithValue("@Value", files);
-                                var res = stmt.ExecuteReader();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(Convert.ToString(e));
-                    }
                    
                 }
                 else
@@ -158,9 +137,9 @@ namespace PinderMVVM.ViewModel
                     MessageBox.Show("No folder selected, please try again!");
                 }
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
-                MessageBox.Show(Convert.ToString(e));
+                MessageBox.Show("Sie haben keine Berechtigung für diesen Ordner! Bitte wenden Sie sich an den Ersteller des Ordners.");
             }
         }
 
